@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments::head_sec}"></head>
+<style>
+    .out-of-stock {
+        opacity: 0.5;
+    }
+</style>
+<body>
+
+<header class="header-area header-style-1 header-height-2" th:replace="~{fragments::header-sec}">
+</header>
+
+
+<div th:replace="~{fragments::side-header}"></div>
+
+<main class="main">
+
+    <section th:replace="~{index::hero-slide}"></section>
+    <section th:replace="~{index::features}"></section>
+    <section class="product-tabs section-padding position-relative wow fadeIn animated">
+        <div class="bg-square"></div>
+        <div class="container">
+            <div class="tab-header">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-two" data-bs-toggle="tab" data-bs-target="#tab-two" type="button" role="tab" aria-controls="tab-two" aria-selected="false">Popular</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three" aria-selected="false">New added</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-four" data-bs-toggle="tab" data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three" aria-selected="false">New added</button>
+                    </li>
+                </ul>
+                <a th:href="@{/product-shop/0}" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a>
+            </div>
+            <!--End nav-tabs-->
+            <div class="tab-content wow fadeIn animated" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                    <div class="row product-grid-4">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6" th:each="product, iterStat : ${products}" th:if="${iterStat.index &lt; 8}">
+                            <div class="product-cart-wrap mb-30" th:classappend="${product.currentQuantity == 0} ? ' out-of-stock'">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a th:href="@{/find-products/{id} (id = ${product.id})}" th:if="${product.image.size()>=1}">
+                                            <img class="default-img" th:src="@{|/imgs/Rose/${product.image[0].getName()}|}" alt="img1">
+                                            <img class="hover-img" th:src="@{|/imgs/Rose/${product.image[0].getName()}|}" alt="img1">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/addToWishList(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Buy now" class="action-btn" th:href="@{/addToCart(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-shopping-bag-add"></i></a>
+
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap" th:each="category :${caregories}" th:if="${category.name == product.category.name}">
+                                    <div class="product-category" >
+                                        <a href="shop-grid-right.html" th:text="${category.name}"></a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html" th:text="${product.name}"></a></h2>
+                                    <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>90%</span>
+                                            </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                        <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                        <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        <span th:if="${product.currentQuantity == 0}">Out Of Stock</span>
+                                        <span th:if="${product.currentQuantity < 10 and product.currentQuantity > 0}">Only Few Left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End product-grid-4-->
+                    <div class="text-center mt-3 mb-3 viewMoreBtnContainer">
+                        <button class="btn btn-primary viewMoreBtn">View More</button>
+                    </div>
+                    <div class="row product-grid-4 additionalProducts" style="display: none;">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6" th:each="product, iterStat : ${products}" th:if="${iterStat.index &gt;= 8 and iterStat.index &lt; 16}">
+                            <div class="product-cart-wrap mb-30" th:classappend="${product.currentQuantity == 0} ? ' out-of-stock'">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a th:href="@{/find-products/{id} (id = ${product.id})}">
+                                            category.name == product.category.name                     <img class="default-img" th:src="@{|/imgs/Rose/${product.image[0].getName()}|}" alt="img1">
+                                            <img class="hover-img" th:src="@{|/imgs/Rose/${product.image[0].getName()}|}" alt="img1">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/addToWishList(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Buy now" class="action-btn" th:href="@{/addToCart(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-shopping-bag-add"></i></a>
+
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap" th:each="category : ${categories}"
+                                     th:if="${category != null and product.category != null and category.name == product.category.name}">
+
+                                <div class="product-category" >
+                                        <a href="shop-grid-right.html" th:text="${category.name}"></a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html" th:text="${product.name}"></a></h2>
+                                    <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>90%</span>
+                                            </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                        <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                        <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        <span th:if="${product.currentQuantity == 0}">Out Of Stock</span>
+                                        <span th:if="${product.currentQuantity < 10 and product.currentQuantity > 0}">Only Few Left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mb-3 showLessBtnContainer" style="display: none;">
+                        <button class="btn btn-primary">Show Less</button>
+                    </div>
+                </div>
+                <!--En tab one (Featured)-->
+                <div class="tab-pane fade" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
+                    <div class="row product-grid-4">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6" th:each="product, iterStat : ${products}" th:if="${iterStat.index &gt;= 8 and iterStat.index &lt; 16}">
+                            <div class="product-cart-wrap mb-30" th:classappend="${product.currentQuantity == 0} ? ' out-of-stock'">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a th:href="@{/find-products/{id} (id = ${product.id})}">
+                                            <img class="default-img" th:src="@{|/imgs/Rose/${product.image[0].getName()}|}" alt="img1">
+                                            <img class="hover-img" th:src="@{|/imgs/Rose/${product.image[0].getName()}|}" alt="img1">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/addToWishList(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Buy now" class="action-btn" th:href="@{/addToCart(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-shopping-bag-add"></i></a>
+
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap" th:each="category :${caregories}" th:if="${category.name == product.category.name}">
+                                    <div class="product-category" >
+                                        <a href="shop-grid-right.html" th:text="${category.name}"></a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html" th:text="${product.name}"></a></h2>
+                                    <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>90%</span>
+                                            </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                        <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                        <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        <span th:if="${product.currentQuantity == 0}">Out Of Stock</span>
+                                        <span th:if="${product.currentQuantity < 10 and product.currentQuantity > 0}">Only Few Left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End product-grid-4-->
+                    <div class="text-center mt-3 mb-3 viewMoreBtnContainer">
+                        <button class="btn btn-primary viewMoreBtn">View More</button>
+                    </div>
+                    <div class="row product-grid-4 additionalProducts" style="display: none;">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6" th:each="product, iterStat : ${products}" th:if="${iterStat.index &gt;= 16 and iterStat.index &lt; 24}">
+                            <div class="product-cart-wrap mb-30" th:classappend="${product.currentQuantity == 0} ? ' out-of-stock'">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a th:href="@{/find-products/{id} (id = ${product.id})}">
+                                            <img class="default-img" th:src="@{|/imgs/items/${product.image[0].getName()}|}" alt="img1">
+                                            <img class="hover-img" th:src="@{|/imgs/items/${product.image[0].getName()}|}" alt="img1">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/addToWishList(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Buy now" class="action-btn" th:href="@{/addToCart(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-shopping-bag-add"></i></a>
+
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap" th:each="category :${caregories}" th:if="${category.name == product.category.name}">
+                                    <div class="product-category" >
+                                        <a href="shop-grid-right.html" th:text="${category.name}"></a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html" th:text="${product.name}"></a></h2>
+                                    <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>90%</span>
+                                            </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                        <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                        <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        <span th:if="${product.currentQuantity == 0}">Out Of Stock</span>
+                                        <span th:if="${product.currentQuantity < 10 and product.currentQuantity > 0}">Only Few Left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mb-3 showLessBtnContainer" style="display: none;">
+                        <button class="btn btn-primary">Show Less</button>
+                    </div>
+                </div>
+                <!--En tab two (Popular)-->
+                <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
+                    <div class="row product-grid-4">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6" th:each="product, iterStat : ${products}" th:if="${iterStat.index &gt;= 16 and iterStat.index &lt; 24}">
+                            <div class="product-cart-wrap mb-30" th:classappend="${product.currentQuantity == 0} ? ' out-of-stock'">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a th:href="@{/find-products/{id} (id = ${product.id})}">
+                                            <img class="default-img" th:src="@{|/imgs/items/${product.image[0].getName()}|}" alt="img1">
+                                            <img class="hover-img" th:src="@{|/imgs/items/${product.image[0].getName()}|}" alt="img1">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/addToWishList(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Buy now" class="action-btn" th:href="@{/addToCart(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-shopping-bag-add"></i></a>
+
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap" th:each="category :${caregories}" th:if="${category.name == product.category.name}">
+                                    <div class="product-category" >
+                                        <a href="shop-grid-right.html" th:text="${category.name}"></a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html" th:text="${product.name}"></a></h2>
+                                    <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>90%</span>
+                                            </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                        <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                        <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        <span th:if="${product.currentQuantity == 0}">Out Of Stock</span>
+                                        <span th:if="${product.currentQuantity < 10 and product.currentQuantity > 0}">Only Few Left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End product-grid-4-->
+                    <div class="text-center mt-3 mb-3" id="viewMoreBtnContainer">
+                        <button id="viewMoreBtn" class="btn btn-primary">View More</button>
+                    </div>
+                    <div class="row product-grid-4" id="additionalProducts" style="display: none;">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6" th:each="product, iterStat : ${products}" th:if="${iterStat.index &gt;= 24 and iterStat.index &lt; 32}">
+                            <div class="product-cart-wrap mb-30" th:classappend="${product.currentQuantity == 0} ? ' out-of-stock'">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a th:href="@{/find-products/{id} (id = ${product.id})}">
+                                            <img class="default-img" th:src="@{|/imgs/items/${product.image[0].getName()}|}" alt="img1">
+                                            <img class="hover-img" th:src="@{|/imgs/items/${product.image[0].getName()}|}" alt="img1">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/addToWishList(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Buy now" class="action-btn" th:href="@{/addToCart(productId=${product.id})}" th:if="${product.currentQuantity > 0}"><i class="fi-rs-shopping-bag-add"></i></a>
+
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap" th:each="category :${caregories}" th:if="${category.name == product.category.name}">
+                                    <div class="product-category" >
+                                        <a href="shop-grid-right.html" th:text="${category.name}"></a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html" th:text="${product.name}"></a></h2>
+                                    <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>90%</span>
+                                            </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                        <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                        <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        <span th:if="${product.currentQuantity == 0}">Out Of Stock</span>
+                                        <span th:if="${product.currentQuantity < 10 and product.currentQuantity > 0}">Only Few Left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mb-3" id="showLessBtnContainer" style="display: none;">
+                        <button class="btn btn-primary">Show Less</button>
+                    </div>
+                </div>
+                <!--En tab three (New added)-->
+            </div>
+            <!--End tab-content-->
+        </div>
+    </section>
+
+    <section class="popular-categories section-padding mt-15 mb-25">
+        <div class="container wow fadeIn animated">
+            <h3 class="section-title mb-20"><span>Popular</span> Categories</h3>
+            <div class="carausel-6-columns-cover position-relative">
+                <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows"></div>
+                <div class="carausel-6-columns" id="carausel-6-columns">
+                    <div class="card-1 border-brand" th:each="category :${categories}">
+                        <figure class=" img-hover-scale overflow-hidden">
+                            <a th:href="'/shop/searchCategoryHome?name=' + ${category.name}"></a>
+                        </figure>
+                        <h5><a th:href="'/shop/searchCategoryHome?name=' + ${category.name}" th:text="${category.name}"></a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-grey-9 section-padding" th:replace="~{index::best-sell}"></section>
+</main>
+
+<footer th:replace="~{fragments::footer-sec}"></footer>
+
+<div th:replace="~{fragments::pre-loader}"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.viewMoreBtn').click(function(){
+            $('.additionalProducts').toggle();
+            $('.showLessBtnContainer').toggle();
+            $('.viewMoreBtnContainer').toggle();
+            $(this).text(function(i, text){
+                return text === "View More" ? "Show Less" : "View More";
+            });
+        });
+
+        $('.showLessBtnContainer').click(function(){
+            $('.additionalProducts').toggle();
+            $('.showLessBtnContainer').toggle();
+            $('.viewMoreBtnContainer').toggle();
+            $('html, body').animate({
+                scrollTop: $("#myTab").offset().top
+            },0);
+            $('.viewMoreBtn').text("View More");
+        });
+    });
+
+
+</script>
+
+
+<div th:replace="~{fragments::scripts}"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head th:replace="~{fragments::head_sec}">
+</head>
+
+<body>
+
+<header class="header-area header-style-1 header-height-2" th:replace="~{fragments::header-sec}">
+</header>
+
+<div th:replace="~{fragments::signin-side-header}"></div>
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a th:href="@{/home}" rel="nofollow">Home</a>
+                <span></span> Shop
+            </div>
+        </div>
+    </div>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="shop-product-fillter style-2">
+                        <div class="totall-product">
+                            <form class="search-form"th:action="@{/filterSearch}" method="GET" id="filterForm">
+                                <div class="search-style-2 d-flex border border-radius">
+                                    <input type="text" name="key" class="border-0" placeholder="Search">
+                                    <button type="submit" class="p-0"><span class="material-symbols-outlined">search</span></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="sort-by-product-area">
+<!--                            <select id="basic" class="form-select show-tick form-control" data-placeholder="$ USD" onchange="location = this.value;">-->
+<!--                                <option selected class="active"  value="null">Filter</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/random">Featured</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/high-price"> High Price → Low Price</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/lower-price">Low Price → High Price</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/newArrival">New arrivals</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/random">Avg. Rating</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/popular">Popularity</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/ascending-name">aA - zZ</option>-->
+<!--                                <option value="http://anshitha.cloud/shop/descending-name">zZ - aA</option>-->
+<!--                            </select>-->
+                        </div>
+                    </div>
+                    <div class="product-list mb-50" >
+                        <div th:if="${size == 0}">
+                            <p class="text-danger">No products found.</p>
+                        </div>
+                        <div class="product-cart-wrap" th:each="product :${products}">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <div class="product-img-inner">
+                                        <a th:href="@{/find-products/{id} (id = ${product.id})}">
+                                            <img class="default-img" th:src="@{|/imgs/Rose/${product.images[0].getName()}|}" alt="img1">
+                                            <img class="hover-img" th:src="@{|/imgs/Rose/${product.images[0].getName()}|}" alt="img1">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-action-1">
+                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/addToWishList(productId=${product.id})}"><i class="fi-rs-heart"></i></a>
+
+                                </div>
+                                <div class="product-badges product-badges-position product-badges-mrg">
+                                    <span class="hot">Hot</span>
+                                </div>
+                            </div>
+                            <div class="product-content-wrap w-100">
+                                <div class="product-category">
+                                    <a th:text="${product.category.name}"></a>
+                                </div>
+                                <h2>
+                                    <a href="shop-product-right.html" th:text="${product.name}"></a>
+                                </h2>
+                                <div class="product-price">
+                                    <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                    <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                    <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                </div>
+                                <p class="mt-15" th:text = "${product.description}"></p>
+                                <div class="product-action-1 show">
+                                    <a aria-label="Buy now" class="action-btn" th:href="@{/addToCart(productId=${product.id})}"><i class="fi-rs-shopping-bag-add"></i>Add to Cart</a>
+                                    <div class="rating-result" title="90%">
+                                                <span>
+                                                    <span>90%</span>
+                                                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--single product-->
+
+                    </div>
+                </div>
+                <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="widget-category mb-30">
+                        <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                        <ul class="categories" th:each="category : ${categories}">
+                            <li th:field="*{name}"><a th:href="'/shop/searchCategoryHome?name=' + ${category.name}" th:text="${category.name}"></a></li>
+                        </ul>
+                    </div>
+<!--                    <div class="banner-img wow fadeIn mb-45 animated d-lg-block d-none">-->
+<!--                        <img src="/shop/imgs/banner/banner-1.jpg" alt="">-->
+<!--                        <div class="banner-text text-white">-->
+<!--                            <span class="text-dark">Women Zone</span>-->
+<!--                            <h4>Save 17% on <br>Bags</h4>-->
+<!--                            <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{fragments::footer-sec}"></footer>
+
+<!-- Vendor JS-->
+<div th:replace="~{fragments::scripts}"></div>
+</body>
+
+</html>
