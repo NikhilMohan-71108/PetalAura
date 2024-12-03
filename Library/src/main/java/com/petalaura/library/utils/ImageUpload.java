@@ -14,7 +14,7 @@ import java.nio.file.StandardOpenOption;
 
 @Service
 public class ImageUpload {
-    private final String UPLOAD_FOLDER = "/home/ubuntu/ecommerce/first_project/Admin/src/main/resources/static/imgs/Rose";
+    private final String UPLOAD_FOLDER = "/home/ubuntu/ecommerce/PetalAura/Admin/src/main/resources/static/imgs/Rose";
 
     String UPLOAD_FOLDER_CUSTOMER ="";
 
