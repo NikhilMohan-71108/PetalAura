@@ -48,7 +48,7 @@ public class OrderDetailsControll {
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("order", order);
         model.addAttribute("order1", order);
-        return "orderDetail-info";
+        return "OrderDetail-info";
     }
 
     @PostMapping("/updateStatus")
