@@ -3,6 +3,7 @@ package com.petalaura.library.Service.impl;
 
 import com.petalaura.library.Repository.CouponRepository;
 import com.petalaura.library.Service.CouponService;
+import com.petalaura.library.exception.CouponLimitExceededException;
 import com.petalaura.library.model.Coupon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,8 +85,11 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public void decreaseCoupon(long id) {
-      Coupon coupon =couponRepository.getReferenceById(id);
-      coupon.setCouponcode(String.valueOf(coupon.getCount()-1));
+        Coupon coupon =couponRepository.getReferenceById(id);
+        if (coupon.getCount() <=0) {
+            throw new CouponLimitExceededException("Coupon limit exceeded");
+        }
+        coupon.setCount(coupon.getCount()-1);
       couponRepository.save(coupon);
     }
 }

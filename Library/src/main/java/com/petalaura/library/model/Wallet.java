@@ -13,17 +13,17 @@ import java.util.List;
 @Entity
 @Table(name="wallets")
 public class Wallet {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
  @Column(name="wallet_id")
-private Long id;
+ private Long id;
 
-private double balance;
+ private double balance;
 
-@OneToOne
-@JoinColumn(name="customer_id",referencedColumnName = "customer_id")
-private Customer customer;
+ @OneToOne
+ @JoinColumn(name="customer_id",referencedColumnName = "customer_id")
+ private Customer customer;
 
-@OneToMany(mappedBy = "wallet", cascade= CascadeType.ALL,fetch = FetchType.LAZY)
-private List<WalletHistory> walletHistories;
+ @OneToMany(mappedBy = "wallet", cascade= CascadeType.ALL,fetch = FetchType.LAZY)
+ private List<WalletHistory> walletHistories;
 }

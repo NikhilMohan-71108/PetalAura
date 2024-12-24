@@ -22,7 +22,7 @@ public class DashboardServiceImpl implements DashBoardService {
 
     @Override
     public double findCurrentMonthOrder(Date startDate, Date endDate) {
-        List<Order> orderList=orderRepository.findByOrderDateBetween(startDate,endDate);
+        List<Order> orderList=orderRepository.findByOrderDateBetween(startDate,startDate);
         double ordersTotalPrice=0;
         if(!orderList.isEmpty()){
             for(Order orders:orderList) {

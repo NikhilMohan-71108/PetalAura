@@ -34,12 +34,17 @@ public class  AuthController {
     @GetMapping("/index")
     public String index(Model model) {
         model.addAttribute("title", "Home Page");
+
+        // Check if the user is authenticated using Spring Security's context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            return "redirect:/login";
+            return "redirect:/login";  // Redirect to login page if not authenticated
         }
+
+        // Proceed to index page if authenticated
         return "index";
     }
+
 
     @GetMapping("/register")
     public String register(Model model, HttpSession session) {

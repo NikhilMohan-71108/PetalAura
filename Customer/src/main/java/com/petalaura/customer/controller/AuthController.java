@@ -27,18 +27,31 @@ public class AuthController {
     WishListService wishListService;
     @GetMapping("/login")
     public String showLoginPage(HttpServletRequest request, HttpSession session, Authentication authentication) {
-        Object attribute=session.getAttribute("userLoginID");
-        if(attribute!=null) {
+        // Check if the user is already authenticated
+        if (authentication != null && authentication.isAuthenticated()) {
+            // User is authenticated, redirect to the home page
             return "redirect:/home";
         }
-        CustomerDto customerDto=new CustomerDto();
-        if(customerDto.isBlocked())
-            return "redirect:/login?blocked";
 
+        // Check if the session attribute "userLoginID" exists and it's not null
+        Object attribute = session.getAttribute("userLoginID");
+        if (attribute != null) {
+            // If the session contains "userLoginID", that means the user is logged in, so redirect to the home page
+            return "redirect:/home";
+        }
+
+        // Handle blocked users if any (for the CustomerDto logic)
+        CustomerDto customerDto = new CustomerDto();
+        if (customerDto.isBlocked()) {
+            return "redirect:/login?blocked"; // Redirect to the login page with a blocked parameter
+        }
+
+        // Otherwise, show the login page
         return "login";
     }
 
-      @GetMapping("/register")
+
+    @GetMapping("/register")
      public String register(Model model) {
         String email = (String) model.asMap().get("email");
         CustomerDto customerDto=new CustomerDto();
@@ -65,7 +78,7 @@ public class AuthController {
         if(customerDto.getPassword().equals(customerDto.getRepeatPassword())) {
             customerService.save(customerDto);
             model.addAttribute("success","Registered Successfully ");
-             return "register";
+           return  "redirect:/login";
         }else{
             session.setAttribute("error", "Passwords do not match");
             return "register";

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="wallet_history")
+@Table(name="wallets_history")
 public class WalletHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

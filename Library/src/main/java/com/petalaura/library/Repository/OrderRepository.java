@@ -27,8 +27,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select o from Order o where o.orderStatus=?1 order by o.orderDate desc ")
     Page<Order> findOrderByOrderStatusPagable(Pageable pageable,String orderStatus);
 
-    List<Order> findByOrderDateBetween(Date startDate, Date endDate);
 
+    List<Order> findByOrderDateBetween(Date startDate, Date endDate);
+    List<Order> findByOrderDateBetween(LocalDate startDate, LocalDate endDate);
     int countByIsAcceptIsFalse();
 
     @Query(value = "SELECT DATE_FORMAT(o.order_date, '%Y-%m') AS month, " +
@@ -91,5 +92,19 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("UPDATE Order o SET o.returnMessage = :returnMessage WHERE o.id = :orderId")
     int updateReturnMessage(Long orderId, String returnMessage);
 
+    @Query(value = "SELECT DATE_FORMAT(o.order_date, '%Y-%u') AS week, SUM(o.grand_total_prize) AS earnings " +
+            "FROM orders o " +
+            "WHERE o.order_status = 'Delivered' " +
+            "AND YEAR(o.order_date) = :year " +
+            "GROUP BY DATE_FORMAT(o.order_date, '%Y-%u')", nativeQuery = true)
+    List<Object[]> weeklyEarnings(@Param("year") int year);
 
+    @Query("select o from Order o order by o.id desc")
+    List<Order> findAllByDate();
+
+    @Query("select o from Order o where o.customer.email=?1 order by o.orderDate desc ")
+    Page<Order> findOrderByCustomerPagable(Pageable pageable,String email);
+
+    @Query("SELECT o FROM Order o WHERE DATE(o.orderDate) = :date")
+    List<Order> findDailyOrders(@Param("date") Date date);
 }

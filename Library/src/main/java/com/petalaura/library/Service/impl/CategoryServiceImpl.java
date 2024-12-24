@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,10 +65,15 @@ private final CategoryRepository categoryRepository;
     }
 
     @Override
-    public Category findById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+    public Optional<Category> findById(Long id) {
+        return categoryRepository.findById(id);
     }
+
+//    @Override
+//    public Category findById(Long id) {
+//        return categoryRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Category not found"));
+//    }
 
     @Override
     public List<Category> findAllByActivatedTrue() {

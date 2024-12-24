@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 public class CategoryController {
@@ -38,7 +39,6 @@ public class CategoryController {
         return "page-categories";
     }
 
-
     @PostMapping("/save-category")
     public String save(@ModelAttribute("categoryNew")Category category, RedirectAttributes redirectAttributes) {
         try {
@@ -54,24 +54,39 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
-    @RequestMapping(value = "/delete-category", method = {RequestMethod.GET, RequestMethod.PUT})
-    public String delete(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-        if (id == null || id <= 0) {
-            redirectAttributes.addFlashAttribute("error", "Invalid category ID!");
-            return "redirect:/categories";
-        }
 
+
+    @GetMapping("/findById")
+    @ResponseBody
+    public Optional<Category> findById(@RequestParam Long id) {
+        return categoryService.findById(id);
+    }
+    @PostMapping("/update-category")
+    public String update(Category category, RedirectAttributes redirectAttributes) {
+        try {
+            categoryService.update(category);
+            redirectAttributes.addFlashAttribute("success", "Update successfully!");
+        } catch (DataIntegrityViolationException e1) {
+            e1.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Duplicate name of category, please check again!");
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Server Error!");
+        }
+        return "redirect:/categories";
+    }
+
+
+    @RequestMapping(value = "/delete-category", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String delete(Long id, RedirectAttributes redirectAttributes) {
         try {
             categoryService.deleteById(id);
             redirectAttributes.addFlashAttribute("success", "Deleted successfully!");
         } catch (DataIntegrityViolationException e1) {
-            //logger.error("Error deleting category", e1);
+            e1.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Duplicate name of category, please check again!");
-        } catch (NoSuchElementException e2) {
-          //  logger.error("Category not found", e2);
-            redirectAttributes.addFlashAttribute("error", "Category not found!");
-        } catch (Exception e3) {
-          //  logger.error("Server error", e3);
+        } catch (Exception e2) {
+            e2.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Server Error!");
         }
         return "redirect:/categories";
@@ -91,21 +106,6 @@ public class CategoryController {
         }
         return "redirect:/categories";
     }
-    @PostMapping("/update-category")
-    public String update(Category category, RedirectAttributes redirectAttributes) {
-        try {
-            categoryService.update(category);
-            redirectAttributes.addFlashAttribute("success", "Update successfully!");
-        } catch (DataIntegrityViolationException e1) {
-            e1.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Duplicate name of category, please check again!");
-        } catch (Exception e2) {
-            e2.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Server  Error, please check again!, please check again!");
-        }
-        return "redirect:/categories";
-    }
-
 
 
 }

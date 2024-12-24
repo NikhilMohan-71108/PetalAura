@@ -15,58 +15,55 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
-public class AdminConfiguration  {
+public class AdminConfiguration {
+
     @Bean
-    public UserDetailsService userDetailsService(){
-        return new AdminServiceConfig();
+    public UserDetailsService userDetailsService() {
+        return new AdminServiceConfig();  // Assuming AdminServiceConfig is your custom implementation
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder
-                = http.getSharedObject(AuthenticationManagerBuilder.class);
-
-        authenticationManagerBuilder
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
+        // Configure authentication manager
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
 
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( author ->
-                        author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .csrf(csrf -> csrf.disable())  // CSRF disabled (ensure this is acceptable for your app)
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .requestMatchers("/forgot-password", "/register", "/register-new").permitAll()
                                 .anyRequest().authenticated()
-
                 )
-                .formLogin(login ->
-                        login.loginPage("/login")
-                                .loginProcessingUrl("/do-login")
-                                .defaultSuccessUrl("/index", true)
-                                .permitAll()
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .loginProcessingUrl("/do-login")
+                        .defaultSuccessUrl("/index", true)
+                        .permitAll()
                 )
-                .logout(logout ->
-                        logout.invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/login?logout")
-                                .permitAll()
+                .logout(logout -> logout
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
                 )
                 .authenticationManager(authenticationManager)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                )
-        ;
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)  // Default session creation policy
+                        .maximumSessions(1)  // Limit to one concurrent session per user (optional)
+                        .expiredUrl("/login?expired")  // Redirect when session expires
+                );
+
         return http.build();
     }
-
 }
-

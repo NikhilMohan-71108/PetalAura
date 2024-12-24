@@ -86,14 +86,14 @@ public class OrderController {
             option.put("status", "COD not allowed for orders above Rs 1000");
             return option.toString();
         }
-     //  if (paymentMethod.equals("wallet")) {
-           // Wallet wallet = walletService.findByCustomer(id);
-//           if (wallet.getBalance() < amount) {
-//                JSONObject option = new JSONObject();
-//                option.put("status", "noWallet");
-//               return option.toString();
-//          }
-      //  }
+       if (paymentMethod.equals("wallet")) {
+            Wallet wallet = walletService.findByCustomer(id);
+           if (wallet.getBalance() < amount) {
+                JSONObject option = new JSONObject();
+                option.put("status", "noWallet");
+               return option.toString();
+          }
+        }
 
 
         ShoppingCart shoppingCart = new ShoppingCart();

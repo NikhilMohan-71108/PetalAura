@@ -5,6 +5,7 @@ import com.petalaura.library.Service.AddressService;
 import com.petalaura.library.Service.CouponService;
 import com.petalaura.library.Service.CustomerService;
 import com.petalaura.library.Service.ShoppingCartService;
+import com.petalaura.library.exception.CouponLimitExceededException;
 import com.petalaura.library.model.Address;
 import com.petalaura.library.model.Coupon;
 import com.petalaura.library.model.Customer;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -45,9 +48,12 @@ public class CouponController {
             return "redirect:/checkOut?expired";
         }
 
-        if(coupons.getCount() < 1){
-            model.addAttribute("error", "Coupon already Used");
+        if(coupons.getCount() <= 0){
+            return "redirect:/checkOut?expired";
         }
+
+
+
         double grandTotal = shoppingCartService.grandTotal(username);
         List<Address> addresses = addressService.findAddressByCustomer(username);
         double payableAmount;
@@ -72,7 +78,12 @@ public class CouponController {
 
 
         if (grandTotal >= coupons.getMinimumOrderAmount()) {
-            couponService.decreaseCoupon(coupons.getId());
+
+            try {
+                couponService.decreaseCoupon(coupons.getId());
+            } catch (CouponLimitExceededException e) {
+                model.addAttribute("errorMessage", e.getMessage());
+            }
         } else {
             model.addAttribute("error", "Order does not meet minimum amount for coupon usage.");
             payableAmount = grandTotal;
@@ -90,22 +101,22 @@ public class CouponController {
     }
 
     @PostMapping("/removeCoupon")
-    public String removeCoupon(Coupon coupon, Principal principal, Model model) {
+    public String removeCoupon(Principal principal, Model model) {
         String username = principal.getName();
         Customer customer = customerService.findByEmail(username);
         List<ShoppingCart> shoppingCarts = shoppingCartService.findShoppingCartByCustomer(username);
         double grandTotal = shoppingCartService.grandTotal(username);
         List<Address> addresses = addressService.findAddressByCustomer(username);
         List<Coupon> availableCoupons = couponService.findAll();
+
         model.addAttribute("addresses", addresses);
         model.addAttribute("cartItem", shoppingCarts);
         model.addAttribute("total", grandTotal);
         model.addAttribute("customer", customer);
         model.addAttribute("payable", grandTotal);
-        model.addAttribute("coupons", availableCoupons);
+        model.addAttribute("coupons",availableCoupons);
 
         return "checkOut";
-
     }
 
     @GetMapping("/coupons")

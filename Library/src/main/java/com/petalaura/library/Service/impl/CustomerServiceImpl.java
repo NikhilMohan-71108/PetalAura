@@ -4,6 +4,7 @@ import com.petalaura.library.Repository.CustomerRepository;
 import com.petalaura.library.Service.CustomerService;
 import com.petalaura.library.dto.CustomerDto;
 import com.petalaura.library.model.Customer;
+import com.petalaura.library.model.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,11 @@ private CustomerRepository customerRepository;
         customer.setRole("User");
         customer.setActivated(true);
         customer.setBlocked(false);
+
+        Wallet wallet = new Wallet();
+        wallet.setBalance(0.0);
+        wallet.setCustomer(customer);
+        customer.setWallet(wallet);
         customerRepository.save(customer);
     }
 
@@ -75,10 +81,28 @@ private CustomerRepository customerRepository;
     }
 
     @Override
+    public void updatePassword(Customer customer, String newPassword) {
+        customer.setPassword(newPassword);
+
+        customer.setResetPasswordToken(null);
+        customerRepository.save(customer);
+    }
+
+    @Override
     public Customer getCustomerById(long id) {
         Optional<Customer> customerOptional = customerRepository.findById(id);
         return customerOptional.orElse(null);
     }
+
+    @Override
+    public void updateResetPasswordToken(String token, String email) {
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer != null) {
+            customer.setResetPasswordToken(token);
+            customerRepository.save(customer);
+        }
+    }
+
 
 //    @Override
 //    public Customer updateResetPasswordToken(String token) {

@@ -15,8 +15,8 @@ public interface    CustomerService {
     void enableById(Long id);
     Customer update(String email, String name, Long mobile);
     Customer getByResetPasswordToken(String token);
-    //
+    void updatePassword(Customer customer, String newPassword);
     // Declare the method to fetch a customer by ID
     Customer getCustomerById(long id);
-
+    void updateResetPasswordToken(String token, String email);
 }

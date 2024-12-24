@@ -238,7 +238,7 @@ public class DashboardController {
 
         String generatedFile;
         List<Object[]> productStats = productService.getProductsStatsBetweenDates(fromDate, toDate);
-        if ("csv".equals(type)) {
+         if ("csv".equals(type)) {
             generatedFile = reportGenerator.generateProductStatsCsv(productStats,(String) requestData.get("from"), (String) requestData.get("to"));
         } else {
             generatedFile = reportGenerator.generateProductStatsPdf(productStats, (String) requestData.get("from"), (String) requestData.get("to"));

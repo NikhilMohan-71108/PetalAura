@@ -59,7 +59,7 @@
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a th:href="@{/home}"><img src="/shop/imgs/theme/images-logo.jpeg" alt="logo"></a>
+                    <a th:href="@{/home}"><img src="/shop/imgs/theme/images.png" alt="logo"></a>
                 </div>
                 <div class="header-right">
                     <div class="search-style-2">
@@ -91,7 +91,7 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="/shop/imgs/theme/images-logo.jpeg" alt="logo"></a>
+                    <a th:href="@{/home}"> <img src="/shop/imgs/theme/images.png" alt="logo"></a>
                 </div>
                 <div class="header-nav d-none d-lg-flex">
 
@@ -100,9 +100,9 @@
                             <ul>
                                 <li><a class="active" th:href="@{/home}">Home</a>
                                 </li>
-                                <!--                                <li>-->
-                                <!--                                    <a href="page-about.html">About</a>-->
-                                <!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="page-about.html">About</a>-->
+<!--                                </li>-->
                                 <li><a th:href="@{/product-shop/0}">Shop</a>
                                 </li>
                                 <li><a th:href="@{/account}">My Account</a>
@@ -119,23 +119,23 @@
                     <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
                 </div>
 
-            </div>
-            <div class="header-action-icon-2 d-block d-lg-none">
-                <div class="burger-icon burger-icon-white">
-                    <span class="burger-icon-top"></span>
-                    <span class="burger-icon-mid"></span>
-                    <span class="burger-icon-bottom"></span>
+                        </div>
+                        <div class="header-action-icon-2 d-block d-lg-none">
+                            <div class="burger-icon burger-icon-white">
+                                <span class="burger-icon-top"></span>
+                                <span class="burger-icon-mid"></span>
+                                <span class="burger-icon-bottom"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
 </header>
 
 <div th:fragment="signin-side-header" class="mobile-header-active mobile-header-wrapper-style">
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="index.html"><img src="/shop/imgs/theme/log.png" alt="logo"></a>
+                <a href="index.html"><img src="/shop/imgs/theme/logo-2.svg" alt="logo"></a>
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -152,37 +152,37 @@
                 </form>
             </div>
 
-            <!-- mobile menu end -->
-        </div>
-        <div class="mobile-header-info-wrap mobile-header-border">
-            <div class="single-mobile-header-info mt-30">
-                <a  href="page-contact.html"> Our location </a>
+                <!-- mobile menu end -->
             </div>
-            <div class="single-mobile-header-info">
-                <a th:text="${session.email != null} ? ${session.email}: 'Authentication'"></a>
-                <a th:href="@{/login}">Log In / Sign Up </a>
+            <div class="mobile-header-info-wrap mobile-header-border">
+                <div class="single-mobile-header-info mt-30">
+                    <a  href="page-contact.html"> Our location </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a th:text="${session.email != null} ? ${session.email}: 'Authentication'"></a>
+                    <a th:href="@{/login}">Log In / Sign Up </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a href="#">(+01) - 2345 - 6789 </a>
+                </div>
             </div>
-            <div class="single-mobile-header-info">
-                <a href="#">(+01) - 2345 - 6789 </a>
+            <div class="mobile-social-icon">
+                <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-youtube.svg" alt=""></a>
             </div>
-        </div>
-        <div class="mobile-social-icon">
-            <h5 class="mb-15 text-grey-4">Follow Us</h5>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-youtube.svg" alt=""></a>
         </div>
     </div>
-</div>
 
 
 <div th:fragment="side-header" class="mobile-header-active mobile-header-wrapper-style">
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="index.html"><img src="/shop/imgs/theme/log.png" alt="logo"></a>
+                <a href="index.html"><img src="/shop/imgs/theme/logo-2.svg" alt="logo"></a>
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -199,30 +199,30 @@
                 </form>
             </div>
 
-            <!-- mobile menu end -->
-        </div>
-        <div class="mobile-header-info-wrap mobile-header-border">
-            <div class="single-mobile-header-info mt-30">
-                <a  href="page-contact.html"> Our location </a>
+                <!-- mobile menu end -->
             </div>
-            <div class="single-mobile-header-info">
-                <a th:text="${session.email != null} ? ${session.email}: 'Authentication'"></a>
-                <a th:href="@{/login}">Log In / Sign Up </a>
+            <div class="mobile-header-info-wrap mobile-header-border">
+                <div class="single-mobile-header-info mt-30">
+                    <a  href="page-contact.html"> Our location </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a th:text="${session.email != null} ? ${session.email}: 'Authentication'"></a>
+                    <a th:href="@{/login}">Log In / Sign Up </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a href="#">(+01) - 2345 - 6789 </a>
+                </div>
             </div>
-            <div class="single-mobile-header-info">
-                <a href="#">(+01) - 2345 - 6789 </a>
+            <div class="mobile-social-icon">
+                <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                <a href="#"><img src="/shop/imgs/theme/icons/icon-youtube.svg" alt=""></a>
             </div>
-        </div>
-        <div class="mobile-social-icon">
-            <h5 class="mb-15 text-grey-4">Follow Us</h5>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-            <a href="#"><img src="/shop/imgs/theme/icons/icon-youtube.svg" alt=""></a>
         </div>
     </div>
-</div>
 
 
 <footer th:fragment="footer-sec" class="main">
@@ -257,7 +257,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="widget-about font-md mb-md-5 mb-lg-0">
                         <div class="logo logo-width-1 wow fadeIn animated">
-                            <a href="index.html"><img src="/shop/imgs/theme/images-logo.jpeg" alt="logo"></a>
+                            <a th:href="@{/home}"><img src="/shop/imgs/theme/images.png" alt="logo"></a>
                         </div>
                         <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                         <p class="wow fadeIn animated">

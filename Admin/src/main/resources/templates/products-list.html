@@ -31,17 +31,17 @@
         <div class="card mb-4">
             <header class="card-header">
                 <div class="row align-items-center">
-                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                        <select class="form-select" th:field="*{categories}" id="categories" name="categories">
-                            <option selected th:value="null"> All categories </option>
-                            <option th:each="category : ${categories}"
-                                    th:value="${category.id}"
-                                    th:text="${category.name}"></option>
-                        </select>
-                    </div>
-                    <div class="col-md-2 col-6">
-                        <input type="date" value="02.05.2022" class="form-control">
-                    </div>
+<!--                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">-->
+<!--                        <select class="form-select" th:field="*{categories}" id="categories" name="categories">-->
+<!--                            <option selected th:value="null"> All categories </option>-->
+<!--                            <option th:each="category : ${categories}"-->
+<!--                                    th:value="${category.id}"-->
+<!--                                    th:text="${category.name}"></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-2 col-6">-->
+<!--                        <input type="date" value="02.05.2022" class="form-control">-->
+<!--                    </div>-->
                     <div th:fragment="search_products" class="col-md-3 col-6 col-search">
                         <form class="searchform" th:action="@{/search-products/0}" method="get">
                             <div class="input-group">

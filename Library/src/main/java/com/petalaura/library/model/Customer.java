@@ -66,7 +66,11 @@ public class Customer {
     private Wallet wallet;
 
 
-
+    @Override
+    public String toString() {
+        // Avoid calling wallet.toString() if it's potentially recursive
+        return "Customer{name='" + name + "', walletId=" + (wallet != null ? wallet.getId() : "null") + "}";
+    }
 
 }
 

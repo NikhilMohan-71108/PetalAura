@@ -23,4 +23,5 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetails,Long>
    @Query("DELETE FROM OrderDetails od WHERE od.id = :id")
    void deleteOrderDetailsById(Long id);
 
+
 }

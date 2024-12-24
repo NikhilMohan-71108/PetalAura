@@ -1,38 +1,74 @@
 package com.petalaura.library.Service;
 
 
+import com.petalaura.library.dto.DailyEarning;
+import com.petalaura.library.dto.Monthlyearning;
+import com.petalaura.library.dto.WeeklyEarnings;
 import com.petalaura.library.model.Order;
 import com.petalaura.library.model.OrderDetails;
 import com.petalaura.library.model.ShoppingCart;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public interface OrderService {
-    List<OrderDetails> findOrderDetailsByCustomer(String email);
-    List<Long> findOrderIdsByAddressId(Long addressId);
-    void cancelOrder(long orderId);
-    void returnOrder(long orderId);
-    boolean isCodAllowed(Double  grandTotal);
     Order saveOrder(ShoppingCart shoppingCart, String email, Long addressId, String paymentMethod, Double grandTotal);
-    void deleteCart(String email);
-    List<OrderDetails> findByOrderId(long orderId);
+    List<OrderDetails> findAllOrder();
+
+    List<OrderDetails> findOrderDetailsByCustomer(String email);
+
+    List<OrderDetails> findByOrderId(Long orderid);
+
+    Order findById(long id);
+
+    void updateOrderStatus(Order order);
+
+    List<Order> findAll();
+
+    void cancelOrder(Long id);
+
+    void returnOrder(Long id);
+
+    List<Order> findOrderByCustomer(String email);
+
+    Order findOrderByIdAndCustomerEmail(Long orderId, String email);
+
+    public List<Order> getDailyOrders(LocalDate date);
+
+    Page<Order> findOrderByPageble(int page, int size);
+
     Page<Order> findOrderByCustomerPagable(int pageNo, String email);
-    List<OrderDetails> findAllOrders();
-    Page<Order> findAllOrdersPagable(int page, int size);
-    void deleteOrderDetailsById(Long orderId);
-     Order findById(Long orderId);
-     void updateOrderStatus(Order order);
-     Page<Order> findOrderByOrderStatusPagable(int pageNo, String status);
-     void returnOrder(Long id);
-     Order findOrderByIdAndCustomerEmail(Long orderId, String email);
-     List<Long> findAllOrderCountForEachMonth();
-     List<Double> getTotalAmountForEachMonth();
-     Double getTotalOrderAmount();
-     Double getTotalAmountForMonth();
-     void acceptReturnOrder(long orderId);
-     void rejectReturnOrder(long orderId);
-     void updateReturnMessage(Long orderId, String returnMessage);
+
+    Page<Order> findOrderByOrderStatusPagable(int pageNo, String status);
+
+    List<Order> getDailyReport(Date date);
+
+    void deleteOrderDetailsById(Long id);
+
+    List<Order> findOrdersByAddressId(Long addressId);
+
+    List<Long> findOrderIdsByAddressId(Long addressId);
+
+    List<Monthlyearning> getMonthlyReport(int year);
+
+    List<DailyEarning> dailyReport(int year, int month);
+
+    List<WeeklyEarnings> findWeeklyEarnings(int year);
+
+    boolean isCodAllowed(Double grandTotal);
+
+
+    Double getTotalOrderAmount();
+
+    Double getTotalAmountForMonth();
+
+    List<Long> findAllOrderCountForEachMonth();
+
+    List<Double> getTotalAmountForEachMonth();
+
+    void deleteCart(String email);
 }

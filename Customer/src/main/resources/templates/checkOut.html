@@ -113,6 +113,7 @@
                             <div th:each="coupon : ${coupons}" class="mt-25" style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
                                 <p>Code: <strong th:text="${coupon.couponcode}"></strong></p>
                                 <p>Discount % : <strong th:text="${coupon.offerPercentage}"></strong></p>
+<!--                                <p>CouponCount : <strong th:text="${coupon.count}"></strong></p>-->
                                 <form th:action="@{/removeCoupon}" th:method="post">
                                     <button class="btn btn-md" type="submit" name="action" th:value="remove"
                                             th:text="'Remove Coupon'"></button>
@@ -208,7 +209,7 @@
                                        name="payment_option" id="exampleRadios5" th:value="wallet">
                                 <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse"
                                        data-target="#paypal" aria-controls="paypal">Wallet</label>
-                                <div><span>Balance: (${customer.wallet.balance})</span> <a th:href="@{/wallets}">Add Balance</a></div>
+                                <div><span>Balance:</span> <a th:href="@{/wallets}">Add Balance</a></div>
 
                                 <div class="form-group collapse in" id="walletMessage" style="display:none; color:red;">
                                     <p class="text-muted mt-5"></p>

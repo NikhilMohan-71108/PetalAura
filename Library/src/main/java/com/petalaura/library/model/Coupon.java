@@ -39,7 +39,7 @@ private Long id;
     private Double minimumOrderAmount;
     private Double maximumOfferAmount;
     @NotNull(message = "Coupon count is required")
-    @Min(value = 1, message = "Coupon count must be at least 1")
+   @Min(value = 0, message = "Coupon count must be at least 1")
     private int count;
 
     private boolean enabled;

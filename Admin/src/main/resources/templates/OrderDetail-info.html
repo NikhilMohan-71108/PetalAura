@@ -47,6 +47,29 @@
                             <input type="submit" value="Save" class="btn btn-primary">
                         </div>
                     </form>
+<!--                    <form th:if="${order.orderStatus != 'Cancel'}" th:action="@{/updateStatus}" th:object="${order1}" method="post">-->
+<!--                        <div class="col-lg-6 col-md-6 ms-auto text-md-end">-->
+<!--                            &lt;!&ndash; Hidden field for order id &ndash;&gt;-->
+<!--                            <input type="hidden" th:field="*{id}">-->
+
+<!--                            &lt;!&ndash; Dropdown for selecting order status &ndash;&gt;-->
+<!--                            <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200" th:field="*{orderStatus}">-->
+<!--                                <option value="" th:text="Select Order Status">Order Status</option>-->
+
+<!--                                &lt;!&ndash; Options based on the current order status &ndash;&gt;-->
+<!--                                <option th:if="${order1.orderStatus == 'Return Pending'}" value="Return Accept" th:selected="${order1.orderStatus == 'Return Accept'}">Return Accept</option>-->
+<!--                                <option th:if="${order1.orderStatus == 'Return Pending'}" value="Return Rejected" th:selected="${order1.orderStatus == 'Return Rejected'}">Return Rejected</option>-->
+<!--                                <option th:if="${order1.orderStatus == ''}" value="Pending" th:selected="${order1.orderStatus == 'Pending'}">Pending</option>-->
+<!--                                <option th:if="${order1.orderStatus == 'Pending' || order1.orderStatus == '' || order1.orderStatus == 'Shipped'}" value="Cancel" th:selected="${order1.orderStatus == 'Cancel'}">Cancel</option>-->
+<!--                                <option th:if="${order1.orderStatus == 'Pending'}" value="Shipped" th:selected="${order1.orderStatus == 'Shipped'}">Shipped</option>-->
+<!--                                <option th:if="${order1.orderStatus == 'Pending' || order1.orderStatus == 'Shipped'}" value="Delivered" th:selected="${order1.orderStatus == 'Delivered'}">Delivered</option>-->
+<!--                            </select>-->
+
+<!--                            &lt;!&ndash; Submit button &ndash;&gt;-->
+<!--                            <input type="submit" value="Save" class="btn btn-primary">-->
+<!--                        </div>-->
+<!--                    </form>-->
+
 
                 </div>
             </header> <!-- card-header end// -->
@@ -144,19 +167,19 @@
                                                 <dt>Grand total:</dt>
                                                 <dd th:text="${order.grandTotalPrize}"> <b class="h5">₹</b> </dd>
                                             </dl>
-                                            <dl class="dlist">
-                                                <dt class="text-muted">Status:</dt>
-                                                <dd>
-                                                    <span class="badge rounded-pill alert-success text-success">Cash on delivery</span>
-                                                </dd>
-                                            </dl>
+<!--                                            <dl class="dlist">-->
+<!--                                                <dt class="text-muted">Status:</dt>-->
+<!--                                                <dd>-->
+<!--                                                    <span class="badge rounded-pill alert-success text-success">Cash on delivery</span>-->
+<!--                                                </dd>-->
+<!--                                            </dl>-->
                                         </article>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div> <!-- table-responsive// -->
-                        <a class="btn btn-primary" th:if="${order.orderStatus != 'Cancel'}" href="page-orders-tracking.html">View Order Tracking</a>
+<!--                        <a class="btn btn-primary" th:if="${order.orderStatus != 'Cancel'}" href="page-orders-tracking.html">View Order Tracking</a>-->
                         <a class="btn btn-danger" th:if="${order.orderStatus == 'Cancel'}" th:href="@{/removeOrder(orderId=${order.id})}">Remove Order</a>
                     </div> <!-- col// -->
                 </div>
