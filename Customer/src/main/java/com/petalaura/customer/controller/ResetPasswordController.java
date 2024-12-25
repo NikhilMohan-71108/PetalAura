@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 
@@ -44,7 +46,7 @@ public class ResetPasswordController {
 
 
         customerService.updateResetPasswordToken(token, email);
-        String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
+        String resetPasswordLink = Utility.getSiteURL(request) + "/shop/reset_password?token=" + token;
         sendEmail(email, resetPasswordLink);
         model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
 
@@ -59,16 +61,17 @@ public class ResetPasswordController {
 
     @GetMapping("/reset_password")
 
-    public String showResetPasswordForm(@Param(value = "token") String token, Model model,
+    public String showResetPasswordForm(@RequestParam(value = "token") String token, Model model,
                                         Principal principal) {
         Customer customer = customerService.getByResetPasswordToken(token);
         model.addAttribute("token", token);
+
 
         if (customer == null) {
             model.addAttribute("message", "Invalid Token");
             return "reset-password-form";
         }
-        String email=principal.getName();
+        String email=customer.getEmail();
         Customer customer1=customerService.findByEmail(email);
         model.addAttribute("customer",customer1);
 
@@ -105,7 +108,7 @@ public class ResetPasswordController {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("contact@shoezilla.com", "ShoeZilla");
+        helper.setFrom("contact@petalaura.com", "PetalAura");
         helper.setTo(recipientEmail);
 
         String subject = "Here's the link to reset your password";

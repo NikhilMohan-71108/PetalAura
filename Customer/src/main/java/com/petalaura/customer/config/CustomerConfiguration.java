@@ -40,6 +40,7 @@ public class CustomerConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/css/**", "/imgs/**", "/js/**", "/fonts/**", "/sass/**", "/**", "/address", "/login").permitAll()
+                        .requestMatchers("/resetPassword", "/reset_password", "/resetPassword/**", "/reset_password/**").permitAll()
                         .requestMatchers("/shop/**").hasAuthority("CUSTOMER")
                         .requestMatchers("/dashboard/**").authenticated()
                         .anyRequest().authenticated()

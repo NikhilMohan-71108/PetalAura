@@ -77,7 +77,7 @@ private CustomerRepository customerRepository;
 
     @Override
     public Customer getByResetPasswordToken(String token) {
-        return null;
+        return customerRepository.findByResetPasswordToken(token);
     }
 
     @Override
