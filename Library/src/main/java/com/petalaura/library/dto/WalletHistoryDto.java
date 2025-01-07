@@ -20,4 +20,8 @@ public class WalletHistoryDto {
     private String transactionStatus;
 
     private Wallet wallet;
+
+    private String transactionId;
+
+    private String paymentId;
 }

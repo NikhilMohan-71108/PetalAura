@@ -13,4 +13,5 @@ Customer findByEmail(String email);
  List<Customer> findAllByActivatedTrue();
  List<Customer> findAll();
  public Customer findByResetPasswordToken(String token);
+ public Customer findByReferralToken(String token);
 }

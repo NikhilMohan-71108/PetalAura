@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order saveOrder(ShoppingCart shoppingCart, String email, Long addressId, String paymentMethod, Double grandTotal) {
-        if (paymentMethod.equalsIgnoreCase("cash_on_delivery") && grandTotal > 1000) {
+        if (paymentMethod.equalsIgnoreCase("Cash On Delivery") && grandTotal > 1000) {
             throw new IllegalArgumentException("Cash on Delivery is not allowed for orders above Rs 1000.");
         }
 
@@ -54,6 +54,7 @@ public class OrderServiceImpl implements OrderService {
         order.setCustomer(customerRepository.findByEmail(email));
         order.setGrandTotalPrize(grandTotal);
         order.setPaymentMethod(paymentMethod);
+        //order.setPaymentId(paymentId);
         order.setShippingAddress(addressRepository.getReferenceById(addressId));
         orderRepository.save(order);
 

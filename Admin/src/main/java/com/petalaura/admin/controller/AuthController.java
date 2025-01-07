@@ -29,13 +29,13 @@ public class  AuthController {
     @GetMapping("/login")
     public String loginForm(Model model, HttpServletRequest request, HttpSession session, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            // User is authenticated, redirect to the home page
+
             return "redirect:/index";
         }
-        // Check if the session attribute "userLoginID" exists and it's not null
+
         Object attribute = session.getAttribute("userLoginID");
         if (attribute != null) {
-            // If the session contains "userLoginID", that means the user is logged in, so redirect to the home page
+            
             return "redirect:/index";
         }
 

@@ -6,6 +6,8 @@ import com.petalaura.library.dto.CustomerDto;
 import com.petalaura.library.model.Customer;
 import com.petalaura.library.model.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -102,7 +104,45 @@ private CustomerRepository customerRepository;
             customerRepository.save(customer);
         }
     }
+   @Override
+    public Customer findById(Long id) {
+        return customerRepository.findById(id).orElse(null);
+    }
 
+    @Override
+    public void updateReferalCodeToken(String token, String email) {
+        Customer customer=customerRepository.findByEmail(email);
+        if(customer!=null){
+            customer.setReferralToken(token);
+            customerRepository.save(customer);
+        }
+    }
+
+    @Override
+    public Customer getByReferalToken(String token) {
+        return customerRepository.findByReferralToken(token);
+    }
+
+    @Override
+    public void saveCustomer(CustomerDto customerDto) {
+        Customer customer=new Customer();
+
+        customer.setName(customerDto.getName());
+        customer.setEmail(customerDto.getEmail());
+        customer.setPassword(customerDto.getPassword());
+        customer.setMobile(customerDto.getMobile());
+        customer.setRole("User");
+        customer.setActivated(true);
+        customer.setBlocked(false);
+
+
+        customerRepository.save(customer);
+    }
+
+//    @Override
+//    public Page<Customer> getCustomersPage(Pageable pageable) {
+//        return customerRepository.findAll(pageable);
+//    }
 
 //    @Override
 //    public Customer updateResetPasswordToken(String token) {

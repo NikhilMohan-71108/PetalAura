@@ -87,6 +87,7 @@
                             <th scope="col">Status</th>
                             <th scope="col">Date</th>
                             <th scope="col">Payment Method</th>
+                            <th scope="col">Payment ID</th>
                             <th scope="col" class="text-end"> Action </th>
                         </tr>
                         </thead>
@@ -110,7 +111,7 @@
 
                             <td th:text="${orders.orderDate}"></td>
                             <td th:text="${orders.paymentMethod}"></td>
-
+                            <td th:text="${orders.paymentId != null ? orders.paymentId : 'N/A'}"></td>
                             <td class="text-end">
                                 <a th:href="@{/orderDetailsInfo(orderId=${orders.id})}" class="btn btn-md rounded font-sm">Detail</a>
 

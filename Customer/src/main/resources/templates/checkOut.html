@@ -108,12 +108,12 @@
 
                         <div class="mt-25" th:if="${coupons != null}"
                              style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
-<!--                            <a> Coupon Applied successfully....</a>-->
+                            <!--                            <a> Coupon Applied successfully....</a>-->
 
                             <div th:each="coupon : ${coupons}" class="mt-25" style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
                                 <p>Code: <strong th:text="${coupon.couponcode}"></strong></p>
                                 <p>Discount % : <strong th:text="${coupon.offerPercentage}"></strong></p>
-<!--                                <p>CouponCount : <strong th:text="${coupon.count}"></strong></p>-->
+                                <!--                                <p>CouponCount : <strong th:text="${coupon.count}"></strong></p>-->
                                 <form th:action="@{/removeCoupon}" th:method="post">
                                     <button class="btn btn-md" type="submit" name="action" th:value="remove"
                                             th:text="'Remove Coupon'"></button>
@@ -183,7 +183,7 @@
                             <div class="payment_option">
                                 <div class="custome-radio">
                                     <input class="form-check-input payment_option" required="" type="radio"
-                                           name="payment_option" id="exampleRadios3" value="cash_on_delivery">
+                                           name="payment_option" id="exampleRadios3" value="Cash on Delivery">
                                     <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse"
                                            data-target="#bankTranfer" aria-controls="bankTranfer">Cash on Delivery</label>
                                     <div class="form-group collapse in" id="bankTranfer">
@@ -196,7 +196,7 @@
                             </div>
                             <div class="custome-radio">
                                 <input class="form-check-input payment_option" required="" type="radio"
-                                       name="payment_option" id="exampleRadios4" th:value="online_payment">
+                                       name="payment_option" id="exampleRadios4" value="Online Payment">
                                 <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse"
                                        data-target="#checkPayment" aria-controls="checkPayment">Online Payment</label>
                                 <div class="form-group collapse in" id="checkPayment">
@@ -430,7 +430,7 @@
             let amount = amount1;
 
             // Check if the payment method is COD and the amount exceeds Rs 5000
-            if (payment_Method === "cash_on_delivery" && amount > 1000) {
+            if (payment_Method === "Cash on Delivery" && amount > 1000) {
                 $('#codMessage').text("Cash on Delivery is not available for orders above Rs 1000.").show();
                 return; // Prevent further execution
             }
@@ -455,8 +455,8 @@
             },
 
             success: function (response) {
-                console.log("01")
-                const newOrderId=response.newOrderId;
+                console.log("01");
+                const newOrderId = response.newOrderId;
                 if (response.status === "cash") {
                     location.href = '/shop/orderConfirm';
                 } else if (response.status === "created") {
@@ -468,8 +468,10 @@
                         description: 'Purchase order',
                         order_id: response.id,
                         handler: function (response) {
+                            // After successful payment, pass payment ID to backend for verification
+                            const razorpayPaymentId = response.razorpay_payment_id;
+                            updatePaymentStatus(newOrderId, "success", razorpayPaymentId); // Send the payment ID to the backend
                             location.href = '/shop/orderConfirm';
-                            updatePaymentStatus(newOrderId, "success");
                         },
                         prefill: {
                             name: "",
@@ -485,15 +487,13 @@
                     };
                     let rzp1 = new Razorpay(options);
                     rzp1.open();
-                    console.log(rzp1.toString())
+                    console.log(rzp1.toString());
                     rzp1.on('payment.failed', function (response) {
                         console.log("Payment failed response:", response);
                         alert("Failed!! Oops Payment failed. Please try after some time");
-                        location.href='/shop/orderFailure'
-                        //newOrderId
-
-                        updatePaymentStatus(newOrderId, "failed");
-
+                        location.href = '/shop/orderFailure';
+                        // Update payment status to failed
+                        updatePaymentStatus(newOrderId, "failed", response.razorpay_payment_id); // Send the payment ID to the backend
                     });
                 } else if (response.status === "noWallet") {
                     $('#walletMessage').text("Insufficient Wallet Balance.").show();
@@ -505,15 +505,15 @@
                 alert("Something went wrong!!");
             }
         });
-    }
+    };
 
-
-    const updatePaymentStatus = (orderId, status) => {
+    const updatePaymentStatus = (orderId, status, paymentId) => {
         $.ajax({
             url: '/shop/verify-payment',
             data: JSON.stringify({
                 order_id: orderId,
-                status: status
+                status: status,
+                razorpay_payment_id: paymentId  // Send the payment ID to the backend
             }),
             contentType: 'application/json',
             type: 'POST',
@@ -536,6 +536,7 @@
             }
         });
     }
+
 </script>
 
 

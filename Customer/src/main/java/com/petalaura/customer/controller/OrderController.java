@@ -99,7 +99,7 @@ public class OrderController {
         ShoppingCart shoppingCart = new ShoppingCart();
         Order order = orderService.saveOrder(shoppingCart, username, address_id, paymentMethod, amount);
 
-        if (paymentMethod.equals("online_payment")) {
+        if (paymentMethod.equalsIgnoreCase("Online Payment")) {
             RazorpayClient client = new RazorpayClient("rzp_test_HmcSu0044VxCip", "wW6RUy1AClT2WQjLycqKoCGU");
             JSONObject object = new JSONObject();
             object.put("amount", amount * 100);
@@ -108,13 +108,16 @@ public class OrderController {
             com.razorpay.Order razorpayOrder = client.orders.create(object);
             // Update payment status to Pending
             order.setPaymentStatus("Success");
+           // order.setPaymentId(razorpayOrder.get("id"));
             Order newOrder = orderRepository.save(order);
+
           //  orderService.deleteCart(username);
             JSONObject response = new JSONObject(razorpayOrder.toString());
             response.put("status", "created");
             response.put("newOrderId", newOrder.getId().toString());
             return response.toString();
         } else if (paymentMethod.equals("wallet")) {
+
             Wallet wallet = walletService.findByCustomer(id);
             orderService.saveOrder(shoppingCart, username, address_id, paymentMethod, amount);
             walletService.debit(wallet, amount);
@@ -140,13 +143,19 @@ public class OrderController {
     @PostMapping("/verify-payment")
     @ResponseBody
     public String showVerifyPayment(@RequestBody Map<String, Object> data) {
+
         String paymentStatus = data.get("status").toString();
         var orderId = data.get("order_id").toString();
 
         Order order = orderService.findById(Long.parseLong(orderId));
 
+        String payment_id = data.get("razorpay_payment_id").toString();
+
+
         if (paymentStatus.equalsIgnoreCase("success")) {
             order.setPaymentStatus("Success");
+            order.setId(Long.valueOf(orderId));
+            order.setPaymentId(data.get("razorpay_payment_id").toString());
             orderService.deleteCart(order.getCustomer().getEmail());
         } else {
             order.setPaymentStatus("Payment Pending");

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments::header_sec}"> </head>
+<body>
+<div class="screen-overlay"></div>
+
+<div th:replace="~{fragments::side_bar}"></div>
+
+<main class="main-wrap mt-50">
+    <div th:replace="~{fragments::nav_bar}"></div>
+    <div class="container">
+        <p th:if="${size == 0}">No Customers</p>
+        <div th:if="${success}" class="text-center alert alert-success">
+            <p th:text="${success}"></p>
+        </div>
+        <div th:if="${error}" class="text-center alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+        <table id="dataTable" class="table table-bordered" th:if="${size > 0}">
+            <thead>
+            <tr>
+                <th scope="col">Full Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Mobile Number</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers}">
+                <th scope="row" th:text="${customer.name}"></th>
+                <td th:text="${customer.email}"></td>
+                <td th:text="${customer.mobile}"></td>
+                <td>
+                    <a th:href="@{/customer/details/{id}(id=${customer.customer_id})}" class="btn btn-primary btn-sm">WalletDetails</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div th:if="${totalPages > 1}" class="pagination-container">
+            <ul class="pagination">
+                <li th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a th:href="@{/customers(page=0, size=${size})}">&laquo;</a>
+                </li>
+                <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${pageNum == currentPage} ? 'active'">
+                    <a th:href="@{/customers(page=${pageNum}, size=${size})}" th:text="${pageNum + 1}"></a>
+                </li>
+                <li th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a th:href="@{/customers(page=${totalPages - 1}, size=${size})}">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments::script}"></div>
+</body>
+</html>

@@ -65,6 +65,8 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
     private Wallet wallet;
 
+  @Column(name = "referrals")
+  private Integer referrals;
 
     @Override
     public String toString() {

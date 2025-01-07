@@ -27,26 +27,19 @@ public class AuthController {
     WishListService wishListService;
     @GetMapping("/login")
     public String showLoginPage(HttpServletRequest request, HttpSession session, Authentication authentication) {
-        // Check if the user is already authenticated
         if (authentication != null && authentication.isAuthenticated()) {
-            // User is authenticated, redirect to the home page
+
             return "redirect:/home";
         }
-
-        // Check if the session attribute "userLoginID" exists and it's not null
         Object attribute = session.getAttribute("userLoginID");
         if (attribute != null) {
-            // If the session contains "userLoginID", that means the user is logged in, so redirect to the home page
+
             return "redirect:/home";
         }
-
-        // Handle blocked users if any (for the CustomerDto logic)
         CustomerDto customerDto = new CustomerDto();
         if (customerDto.isBlocked()) {
-            return "redirect:/login?blocked"; // Redirect to the login page with a blocked parameter
+            return "redirect:/login?blocked";
         }
-
-        // Otherwise, show the login page
         return "login";
     }
 

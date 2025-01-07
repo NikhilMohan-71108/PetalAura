@@ -21,6 +21,9 @@ public class WalletHistory {
     private double amount;
     private WalletTransactionHistory type;
     private String transactionStatus;
+
+    @Column(name = "payment_id")  // Add this field to store Razorpay payment ID
+    private String paymentId;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="wallet_id",referencedColumnName = "wallet_id")
     private Wallet wallet;

@@ -28,6 +28,7 @@ public class Order {
     private double shippingFee;
     private String isAccept;
     private String paymentStatus;
+    private String paymentId;
     private String returnMessage;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")

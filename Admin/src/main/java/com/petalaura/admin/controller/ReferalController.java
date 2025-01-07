@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.security.Principal;
 
 @Controller
-public class ReferalController {
+public class  ReferalController {
     @Autowired
     CustomerService customerService;
     @PostMapping("/sendReferal")

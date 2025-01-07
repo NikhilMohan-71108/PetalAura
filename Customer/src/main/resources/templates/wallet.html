@@ -35,6 +35,7 @@
                 <th>Amount</th>
                 <th>Type</th>
                 <th>Transaction Status</th>
+                <th>Payment ID</th>
             </tr>
             </thead>
             <tbody>
@@ -42,6 +43,7 @@
                 <td>₹[(${walletHistory.amount})]</td>
                 <td th:text="${walletHistory.type}"></td>
                 <td th:text="${walletHistory.transactionStatus}"></td>
+                <td th:text="${walletHistory.paymentId != null ? walletHistory.paymentId : 'N/A'}"></td> <!-- Display Payment ID -->
             </tr>
             </tbody>
         </table>

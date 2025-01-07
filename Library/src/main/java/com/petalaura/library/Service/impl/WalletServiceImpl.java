@@ -1,6 +1,7 @@
 package com.petalaura.library.Service.impl;
 
 
+import com.petalaura.library.Repository.CustomerRepository;
 import com.petalaura.library.Repository.OrderRepository;
 import com.petalaura.library.Repository.WalletHistoryRepository;
 import com.petalaura.library.Repository.WalletRepository;
@@ -15,12 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Service
 public class WalletServiceImpl  implements WalletService {
     private WalletRepository walletRepository;
 
     private WalletHistoryRepository walletHistoryRepository;
+
+    private CustomerRepository customerRepository;
 
     @Autowired
     OrderRepository orderRepository;
@@ -35,7 +39,8 @@ public class WalletServiceImpl  implements WalletService {
     public List<WalletHistoryDto> findAllById(long id) {
         List<WalletHistory> walletHistory =walletHistoryRepository.findAllById(id);
         List<WalletHistoryDto> walletHistoryDtoList=transferData(walletHistory);
-
+        WalletHistory walletHistories=new WalletHistory();
+       // walletHistories.setPaymentId(walletHistory.get(0).getPaymentId());
         return walletHistoryDtoList;
     }
 
@@ -66,6 +71,7 @@ public class WalletServiceImpl  implements WalletService {
         walletHistory.setWallet(wallet);
         walletHistory.setType(WalletTransactionHistory.CREDITED);
         walletHistory.setAmount(amount);
+        //walletHistory.setPaymentId();
         walletHistoryRepository.save(walletHistory);
 
         return walletHistory;
@@ -147,6 +153,30 @@ public class WalletServiceImpl  implements WalletService {
         walletHistoryRepository.save(walletHistory);
     }
 
+    @Override
+    public void addWalletToReferalEarn(Long customerId) {
+        Customer customer=customerRepository.getReferenceById(customerId);
+        Wallet wallet=walletRepository.findByCustomer(customerId);
+        customer.setReferrals(customer.getReferrals() + 1);
+        if(wallet!=null){
+            wallet.setBalance(wallet.getBalance()+100);
+        }
+        else{
+            wallet=new Wallet();
+            wallet.setCustomer(customer);
+            wallet.setBalance(100);
+        }
+        walletRepository.save(wallet);
+        WalletHistory walletHistory=new WalletHistory();
+        walletHistory.setWallet(wallet);
+
+        walletHistory.setAmount(100);
+       walletHistory.setType(WalletTransactionHistory.CREDITED);
+       walletHistory.setTransactionStatus("Referal Earn");
+        walletHistoryRepository.save(walletHistory);
+
+    }
+
 
     public List<WalletHistoryDto> transferData(List<WalletHistory> walletHistoryList){
 
@@ -160,6 +190,7 @@ public class WalletServiceImpl  implements WalletService {
             walletHistoryDto.setWallet(walletHistory.getWallet());
             walletHistoryDto.setTransactionStatus(walletHistory.getTransactionStatus());
             walletHistoryDtoList.add(walletHistoryDto);
+            walletHistoryDto.setPaymentId(walletHistory.getPaymentId());
         }
 
 

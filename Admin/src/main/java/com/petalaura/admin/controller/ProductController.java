@@ -78,7 +78,7 @@ public class ProductController {
                               Model model) {
 
         if (result.hasErrors()) {
-          //  model.addAttribute("productDto", productDto);
+            //  model.addAttribute("productDto", productDto);
             // result.toString();
             return "redirect:/add-product";
         } else {
@@ -93,6 +93,15 @@ public class ProductController {
             return "redirect:/products/0";
         }
     }
+    // Helper method to get the file extension
+    private String getFileExtension(String fileName) {
+        int lastIndex = fileName.lastIndexOf('.');
+        if (lastIndex == -1) {
+            return ""; // No extension found
+        }
+        return fileName.substring(lastIndex + 1);
+    }
+
 
     @GetMapping("/products/{pageNo}")
     public String allProducts(@PathVariable("pageNo") int pageNo, Model model, Principal principal) {
