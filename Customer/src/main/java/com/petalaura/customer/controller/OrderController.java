@@ -144,12 +144,12 @@ public class OrderController {
     @ResponseBody
     public String showVerifyPayment(@RequestBody Map<String, Object> data) {
 
-        String paymentStatus = data.get("status").toString();
+        String paymentStatus = data.get("status") != null ? data.get("status").toString() : "";
         var orderId = data.get("order_id").toString();
 
         Order order = orderService.findById(Long.parseLong(orderId));
 
-        String payment_id = data.get("razorpay_payment_id").toString();
+//        String payment_id = data.get("razorpay_payment_id").toString();
 
 
         if (paymentStatus.equalsIgnoreCase("success")) {
